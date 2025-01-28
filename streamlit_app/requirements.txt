@@ -1,0 +1,24 @@
+# Core dependencies
+streamlit
+pandas
+numpy
+
+# Data visualization
+plotly
+matplotlib
+
+# Backend utilities
+fastapi    # (Only if you plan to use a backend API)
+uvicorn    # (Only if using FastAPI)
+
+# Security & environment management
+python-dotenv
+
+# Optional dependencies (comment out if not needed)
+pyngrok    # (For exposing local apps via ngrok)
+scikit-learn  # (For any ML models)
+pytest  # (For testing)
+
+# Specify Python version (optional)
+python>=3.8
+
