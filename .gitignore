@@ -1,0 +1,48 @@
+# Ignore virtual environment
+venv/
+.env
+
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+
+# Ignore system-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore logs and temp files
+logs/
+*.log
+
+# Ignore compiled files
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore Streamlit secrets (if any)
+.streamlit/secrets.toml
+
+# Ignore Jupyter Notebook checkpoints (if applicable)
+.ipynb_checkpoints/
+
+# Ignore dependency logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Ignore VS Code settings (if using VS Code)
+.vscode/
+
+# Ignore PyCharm settings (if using PyCharm)
+.idea/
+
+# Ignore any generated files
+*.bak
+*.swp
+
+# WHY?
+# venv/ ensures that your virtual environment isn't pushed to GitHub.
+# .env prevents sensitive API keys or credentials from being exposed.
+# __pycache__/ avoids unnecessary Python bytecode files.
+# .streamlit/secrets.toml prevents confidential configurations from being leaked.
+# .DS_Store, Thumbs.db, and .idea/ prevent OS-specific or IDE-related clutter.
+# *.pyc avoids committing compiled Python files
