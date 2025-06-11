@@ -39,6 +39,9 @@ pip-delete-this-directory.txt
 *.bak
 *.swp
 
+# Ignore .specstory
+.specstory/
+
 # WHY?
 # venv/ ensures that your virtual environment isn't pushed to GitHub.
 # .env prevents sensitive API keys or credentials from being exposed.
