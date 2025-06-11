@@ -1,0 +1,11 @@
+# Python version
+python_version == "3.9"
+
+# Core dependencies
+streamlit==1.45.1
+pandas==2.2.3
+numpy==1.26.4
+openpyxl==3.1.5
+plotly==5.6.0
+matplotlib==3.9.4
+python-dotenv==1.1.0 
