@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+streamlit = "*"
+pandas = "*"
+numpy = "*"
+plotly = "*"
+matplotlib = "*"
+fastapi = "*"
+uvicorn = "*"
+python-dotenv = "*"
+pyngrok = "*"
+scikit-learn = "*"
+pytest = "*"
+python = ">=3.8"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"

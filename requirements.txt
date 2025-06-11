@@ -2,6 +2,7 @@
 streamlit
 pandas
 numpy
+openpyxl
 
 # Data visualization
 plotly
@@ -18,7 +19,4 @@ python-dotenv
 pyngrok    # (For exposing local apps via ngrok)
 scikit-learn  # (For any ML models)
 pytest  # (For testing)
-
-# Specify Python version (optional)
-python>=3.8
 
