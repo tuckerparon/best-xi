@@ -12,4 +12,6 @@ By using Best.XI, you agree to the following:
 
 If you do not agree to these terms, do not use Best.XI. 
 
-> **Note:** This user agreement is intended for informational purposes only and is not a legally binding contract.
+## Refund Policy
+
+If you are not satisfied with Best.XI, you are eligible for a full refund within the first 30 days of using the app. The full purchase amount will be refunded, and you will be able to maintain access for the remainder of the year for free.

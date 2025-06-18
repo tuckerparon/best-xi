@@ -64,22 +64,11 @@
 **Best.XI is a decision-support tool.**  
 It is designed to provide an additional, data-centric perspective to supplement (not replace) coaching decisions. Use Best.XI as one input among many in your lineup selection process.
 
+## 5. Feedback & Support
 
-## 5. Access & Security
+As a Best.XI user, your feedback is invaluable! Please share your experience and suggestions to help us improve Best.XI. Please reach out to tucker@controllables.org or call/text me directly at (203) 217-7602.
 
-- **Password Protection:**  
-  Access to Best.XI is restricted to the 2025 pilot cohort.  
-  - **Password:** `PILOT25`
-  - Please do not share this password outside your team.
-
-- **Availability:**  
-  The site is live and available 24/7 for pilot users.
-
-## 6. Feedback & Support
-
-As a pilot user, your feedback is invaluable! Please share your experience and suggestions within 14 days to help us improve Best.XI.
-
-## 7. Legal
+## 6. Legal
 
 - **Data Responsibility:**  
   Users are solely responsible for ensuring they have the right to use any data uploaded to Best.XI.
