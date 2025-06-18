@@ -1,5 +1,3 @@
-![Best.XI Logo](best_xi_logo.png)
-
 # User Manual
 
 ## 1. Overview

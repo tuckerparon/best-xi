@@ -1,5 +1,3 @@
-![Best.XI Logo](best_xi_logo.png)
-
 # Frequently Asked Questions (FAQ)
 
 ### Can I compare players in positions they haven't played in?
