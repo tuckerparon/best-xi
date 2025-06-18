@@ -1,5 +1,3 @@
-> **Note:** This user agreement is intended for informational purposes only and is not a legally binding contract.
-
 # User Agreement
 
 By using Best.XI, you agree to the following:
@@ -13,3 +11,5 @@ By using Best.XI, you agree to the following:
 - Feedback is appreciated to help improve the tool.
 
 If you do not agree to these terms, do not use Best.XI. 
+
+> **Note:** This user agreement is intended for informational purposes only and is not a legally binding contract.
