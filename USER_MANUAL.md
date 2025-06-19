@@ -5,7 +5,7 @@
 **Best.XI** is a decision-support tool designed to help soccer coaches make more informed lineup selections. By allowing users to upload their own player performance data, Best.XI provides a data-centric perspective to supplement traditional coaching insights. The tool offers clear, visual, and quantitative comparisons between players based on customizable metrics.
 
 > **Disclaimer:**  
-> Best.XI is not affiliated with or endorsed by any data provider. Users must upload data they have the legal right to use. Best.XI is a standalone decision-support tool for lineup selection.
+> Best.XI is not affiliated with or endorsed by any data provider or similar services. Users must upload data they have the legal right to use. Best.XI is a standalone decision-support tool for lineup selection.
 
 
 ## 2. How to Use Best.XI

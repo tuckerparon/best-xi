@@ -28,7 +28,7 @@ You need player performance data in Excel format (.xlsx), with each file represe
 
 ---
 
-### Is Best.XI affiliated with Wyscout or any other data provider?
+### Is Best.XI affiliated with any data provider?
 No. Best.XI is not affiliated with, endorsed by, or partnered with any data provider. Users are responsible for ensuring they have the legal right to use any data uploaded to the platform.
 
 ---
