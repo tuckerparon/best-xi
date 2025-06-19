@@ -5,6 +5,14 @@
 
 ---
 
+### How does Best.XI handle negative metrics (where lower is better)?
+Some stats, like Fouls, Yellow Cards, Red Cards, Losses, Conceded Goals, and similar, are considered "negative metrics" — meaning lower values are better. Best.XI automatically inverts the normalization for these metrics, so that a lower value results in a higher normalized score. This ensures that players are rewarded for having fewer negative events, and the scoring remains fair and intuitive.
+
+**Example:**
+If Player A has 2 yellow cards and Player B has 5 yellow cards, Player A will receive a higher normalized score for this metric, since fewer yellow cards is better.
+
+---
+
 ### Can I use Best.XI for recruiting?
 **Yes, but with caution.** You can use Best.XI to compare potential recruits, but remember that players may have faced different levels of competition. For example, a striker in a lower league may have better stats than one in a higher league simply due to the quality of opposition. Best.XI does **not** adjust for strength of schedule or opponent, so always consider the context of the data when making recruiting decisions.
 
@@ -32,3 +40,16 @@ Best.XI normalizes each selected metric for the group of players being compared 
 
 ### What does it mean if all players are at 0 for a stat on the radar plot?
 If all players are at 0 for a stat, it means every player had the same value for that stat in the data provided. There was no difference to compare for that metric among the selected players.
+
+**Example:**
+If all compared players have 1 goal, the radar plot will show 0 for this metric for everyone, indicating no difference in this stat.
+
+--- 
+
+### During data processing, do you only factor in the games that the players played in that position?
+Yes. Best.XI only includes games where each player played the selected position (or grouped position) for analysis and scoring. This ensures that all comparisons are fair and position-specific.
+
+**Example:**
+If you are comparing players for the "Left Winger" position, and a player played 10 games in total but only 4 as a Left Winger, only those 4 games will be used for their stats and scoring in the comparison. The other 6 games (played in different positions) are ignored for this analysis.
+
+---

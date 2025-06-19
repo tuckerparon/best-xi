@@ -121,19 +121,30 @@ with tab_app:
             # Get unique positions from the data
             data_positions = set(
                 pos.strip() for positions in combined_data["Position"].dropna() 
+                if isinstance(positions, str)
                 for pos in positions.split(",") if pos.strip()
             )
             
             # Create final position list including both individual and grouped positions
             unique_positions = set()
             for group_name, grouped_positions in position_map.items():
+                group_set = set(grouped_positions)
                 # Find players for each position in the group
                 players_in_group = combined_data[
-                    combined_data["Position"].apply(lambda x: any(pos in x for pos in grouped_positions))
+                    combined_data["Position"].apply(
+                        lambda x: isinstance(x, str) and any(pos in group_set for pos in [p.strip() for p in x.split(",")])
+                    )
                 ]
                 if not players_in_group.empty:
                     unique_positions.add(f"{group_name} ({'/'.join(grouped_positions)})")
-                    unique_positions.update(pos for pos in grouped_positions if not combined_data[combined_data["Position"].str.contains(pos)].empty)
+                    unique_positions.update(
+                        pos for pos in grouped_positions
+                        if not combined_data[
+                            combined_data["Position"].apply(
+                                lambda x: isinstance(x, str) and pos in [p.strip() for p in x.split(",")]
+                            )
+                        ].empty
+                    )
             # Only keep positions with at least one player
             unique_positions = sorted(unique_positions)
 
@@ -143,27 +154,42 @@ with tab_app:
         # Step 2: Select Position for Comparison
         st.subheader("Step 2: Select Position for Comparison")
         selected_position = st.selectbox("Select Position", unique_positions, key="selected_position", index=0)
+        # User selects a position from the dropdown (populated with valid/grouped positions)
         
         if "No Positions Available" in unique_positions:
             st.warning("No valid positions found in the data. Please check your uploaded files.")
             st.stop()
+        # If no valid positions, show warning and stop
 
-        # Filter data based on selected position
-        if selected_position in position_map:
-            # Grouped position: filter for any of the mapped positions
-            group_positions = position_map[selected_position.split(" (")[0]]
-            filtered_data = combined_data[combined_data["Position"].apply(lambda x: any(pos in x for pos in group_positions))]
+        # --- POSITION FILTERING LOGIC ---
+        # Robustly detect grouped positions by checking for ' (' and group name in position_map
+        if " (" in selected_position and selected_position.split(" (")[0] in position_map:
+            # If grouped position selected, get group name and set of positions
+            group_name = selected_position.split(" (")[0]
+            group_positions = set(position_map[group_name])
+            filtered_data = combined_data[
+                combined_data["Position"].apply(
+                    lambda x: isinstance(x, str) and any(pos in group_positions for pos in [p.strip() for p in x.split(",")])
+                )
+            ]
         else:
-            # Individual position
-            filtered_data = combined_data[combined_data["Position"].str.contains(selected_position)]
+            # If individual position selected, filter for exact match (split/strip logic)
+            filtered_data = combined_data[
+                combined_data["Position"].apply(
+                    lambda x: isinstance(x, str) and selected_position in [p.strip() for p in x.split(",")]
+                )
+            ]
 
         if filtered_data.empty:
             st.warning("No players available for this position. Please select another position.")
             st.stop()
+        # If no rows after filtering, show warning and stop
 
         # Aggregate per 90 stats across all games where the player played this position
         numeric_cols = filtered_data.select_dtypes(include=["number"]).columns.tolist()
-        filtered_data = filtered_data.groupby("Player Name")[numeric_cols].mean().reset_index()
+        filtered_data_agg = filtered_data.groupby("Player Name")[numeric_cols].mean().reset_index()
+        filtered_data = filtered_data_agg
+        # After aggregation, filtered_data contains one row per player with mean stats for the selected position
 
         # Step 3: Select Metrics
         st.subheader(f"Step 3: Select Important Metrics for {selected_position}")

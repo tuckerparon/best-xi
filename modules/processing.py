@@ -29,6 +29,11 @@ def process_formatting_split(df):
     # Update the DataFrame with the new column names
     df.columns = updated_columns
     
+    # Drop columns that represent the minute of the card, not the count
+    for col_to_drop in ["Red card", "Yellow card"]:
+        if col_to_drop in df.columns:
+            df = df.drop(columns=[col_to_drop])
+    
     # Add percentage columns
     percentage_columns = {}
     for col in df.columns:

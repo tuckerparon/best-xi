@@ -11,6 +11,8 @@ def calculate_position_scores(df, metrics_weights):
        - 0 represents the worst performance across all weighted metrics
        - Scores are relative to the players being compared
     
+    Negative metrics (where lower is better) are inverted during normalization.
+    
     Args:
         df (pd.DataFrame): DataFrame containing player metrics
         metrics_weights (dict): Dictionary of metric names and their weights (1-10)
@@ -18,13 +20,29 @@ def calculate_position_scores(df, metrics_weights):
     Returns:
         pd.DataFrame: DataFrame with added 'Position Score' column
     """
+    # List of negative metrics (lower is better)
+    NEGATIVE_METRICS = [
+        "Losses (total)",
+        "Losses (own half)",
+        "Fouls",
+        "Yellow cards",
+        "Red cards",
+        "Conceded goals",
+        "Shots against",
+        "Offsides",
+        "xCG",
+        "% Losses (own half)"
+    ]
     # Normalize each metric to 0-1 scale
     for metric in metrics_weights.keys():
         if metric in df.columns:
             min_val = df[metric].min()
             max_val = df[metric].max()
             if max_val > min_val:  # Avoid division by zero
-                df[f'{metric}_normalized'] = (df[metric] - min_val) / (max_val - min_val)
+                if metric in NEGATIVE_METRICS:
+                    df[f'{metric}_normalized'] = 1 - (df[metric] - min_val) / (max_val - min_val)
+                else:
+                    df[f'{metric}_normalized'] = (df[metric] - min_val) / (max_val - min_val)
             else:
                 df[f'{metric}_normalized'] = 0
     
