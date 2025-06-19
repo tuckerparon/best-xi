@@ -3,6 +3,7 @@ import pandas as pd
 from modules.processing import load_and_process_files
 from modules.visualizations import create_radar_chart
 from pathlib import Path
+from modules.scoring import calculate_position_scores
 
 # Password protection
 PASSWORD = "PILOT25"
@@ -186,10 +187,15 @@ with tab_app:
         # If no rows after filtering, show warning and stop
 
         # Aggregate per 90 stats across all games where the player played this position
+        # Calculate games played and minutes played at the selected position for each player
+        games_played = filtered_data.groupby("Player Name").size().rename("Games Played at Position")
+        minutes_played = filtered_data.groupby("Player Name")['Minutes played'].sum().rename("Minutes Played at Position")
         numeric_cols = filtered_data.select_dtypes(include=["number"]).columns.tolist()
         filtered_data_agg = filtered_data.groupby("Player Name")[numeric_cols].mean().reset_index()
+        # Merge games played and minutes played into the aggregated data
+        filtered_data_agg = filtered_data_agg.merge(games_played, on="Player Name").merge(minutes_played, on="Player Name")
         filtered_data = filtered_data_agg
-        # After aggregation, filtered_data contains one row per player with mean stats for the selected position
+        # After aggregation, filtered_data contains one row per player with mean stats for the selected position, plus games/minutes played
 
         # Step 3: Select Metrics
         st.subheader(f"Step 3: Select Important Metrics for {selected_position}")
@@ -223,14 +229,13 @@ with tab_app:
                     final_data = filtered_data[filtered_data["Player Name"].isin(selected_players)]
                     relevant_metrics = list(weights.keys())
 
-                    # Calculate Position Score
-                    final_data["Position Score"] = final_data.apply(
-                        lambda row: sum(row[metric] * weights[metric] for metric in weights if metric in row), axis=1
-                    )
+                    # Calculate Position Score using the correct 0-10 scaling
+                    final_data = calculate_position_scores(final_data, weights)
 
                     # Rank Players by Position Score
                     ranked_data = final_data.sort_values(by="Position Score", ascending=False)
-                    st.dataframe(ranked_data[["Player Name", "Position Score"] + relevant_metrics])
+                    # Display table with position score, games/minutes played, and selected metrics
+                    st.dataframe(ranked_data[["Player Name", "Position Score", "Games Played at Position", "Minutes Played at Position"] + relevant_metrics])
 
                     # Step 7: Visualize Player Comparisons
                     st.text("Radar Plot")
