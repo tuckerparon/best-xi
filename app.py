@@ -1,14 +1,15 @@
 import streamlit as st
 import pandas as pd
-from modules.processing import load_and_process_files
-from modules.visualizations import create_radar_chart
 from pathlib import Path
-from modules.scoring import calculate_position_scores
 import os
 from dotenv import load_dotenv
+from modules.processing import load_and_process_files
+from modules.visualizations import create_radar_chart
+from modules.scoring import calculate_position_scores
+from modules.styles import apply_custom_styles
 
 load_dotenv()
-PASSWORD = os.getenv("APP_PASSWORD", "PILOT25")  # Default for local dev only
+PASSWORD = os.getenv("APP_PASSWORD", "PILOT26")  # Default for local dev only
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
 
@@ -32,17 +33,6 @@ def render_header():
             unsafe_allow_html=True
         )
 
-# Try to center the Streamlit tab navigation bar
-st.markdown(
-    """
-    <style>
-    div[data-baseweb="tab-list"] {
-        justify-content: center !important;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 # Tabs for navigation
 TABS = ["App", "User Manual", "FAQ", "User Agreement"]
@@ -50,45 +40,7 @@ tab_app, tab_manual, tab_faq, tab_agreement = st.tabs(TABS)
 
 with tab_app:
     render_header()
-    # Streamlit app
-    st.markdown(
-        """
-        <style>
-        .stApp {background-color: #e0e0e0; color: #222 !important;}
-        .stMarkdown, .css-10trblm, .css-1v0mbdj, .css-1d391kg, .css-1cpxqw2 {color: #222 !important;}
-        .stMarkdownContainer {color: #000 !important;}
-        .stAlert {background-color: #e3f0ff !important; color: #111 !important; font-weight: bold;}
-        .stAlert > div {color: #111 !important;}
-        .stFileUploader label {color: #222 !important;}
-        .stSelectbox label, .stMultiSelect label, .stSelectbox label span, .stMultiSelect label span {color: #222 !important;}
-        .stDataFrame .css-1vzeuhh, .stDataFrame .css-12w0qpk {color: #222 !important;}
-        .stDataFrame div, .stDataFrame span {color: #000 !important;}
-        .stDataFrame th, .stDataFrame td {color: inherit !important;}
-        .stFileUploader .css-1aehpvj, .stFileUploader .st-badge, .stFileUploader .badge, .stFileUploader span[style*="background"], .stFileUploader div[style*="background"] {
-            color: #111 !important;
-            background: #e0e0e0 !important;
-        }
-        st-emotion-cache-qoz3f2, st-emotion-cache-qoz3f2 p {
-            color: #000 !important;
-        }
-        
-        .stFileUploader .st-emotion-cache-c8ta4l {
-            color: #808080 !important;
-        }
-
-        .st-emotion-cache-qoz3f2 p, .st-emotion-cache-qoz3f2 {color: #000 !important;}
-        .st-emotion-cache-1weic72 {color: #000 !important;}
-        .st-emotion-cache-ovf5rk p, .st-emotion-cache-ovf5rk {color: #fff !important;}
-        .st-emotion-cache-1u2dcfn {color: #fff !important;}
-        .st-emotion-cache-1ucesps svg {color: #fff !important;}
-        th[role="columnheader"] {color: #fff !important; font-weight: bold !important;}
-        .st-emotion-cache-ah6jdd {color: #000 !important;}
-        .st-emotion-cache-y4bq5x {color: #000 !important;}
-
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+    apply_custom_styles() 
 
     # Step 1: Upload Player Data Files
     st.subheader("Step 1: Upload Player Data")

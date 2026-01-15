@@ -8,5 +8,16 @@ Best.XI is a college soccer analytics tool that allows coaching staffs to make u
 
 ## Development
 
+* Build you virtual environment with uv:
+```bash
+uv sync
+```
 
-## Deployment
+* Run the app.
+```bash
+uv run streamlit run app.py
+```
+
+* Make requisite edits.
+    - Streamlit automatically updates live with edits, so no need to rerun app. 
+
