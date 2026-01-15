@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from modules.visualizations import create_radar_chart
 from modules.scoring import calculate_position_scores
 from modules.styles import apply_custom_styles
+from modules.metric_selection import render_metric_weights_ui
 from modules.processing import (
     load_and_process_files, 
     get_available_positions, 
@@ -112,13 +113,7 @@ with tab_app:
 
         # Aggregate per 90 stats across all games where the player played this position
         # Calculate games played and minutes played at the selected position for each player
-        games_played = filtered_data.groupby("Player Name").size().rename("Games Played at Position")
-        minutes_played = filtered_data.groupby("Player Name")['Minutes played'].sum().rename("Minutes Played at Position")
-        numeric_cols = filtered_data.select_dtypes(include=["number"]).columns.tolist()
-        filtered_data_agg = filtered_data.groupby("Player Name")[numeric_cols].mean().reset_index()
-        # Merge games played and minutes played into the aggregated data
-        filtered_data_agg = filtered_data_agg.merge(games_played, on="Player Name").merge(minutes_played, on="Player Name")
-        filtered_data = filtered_data_agg
+        filtered_data, numeric_cols = aggregate_player_stats(filtered_data)
         # After aggregation, filtered_data contains one row per player with mean stats for the selected position, plus games/minutes played
 
         # Step 3: Select Metrics
@@ -127,14 +122,7 @@ with tab_app:
 
         # Step 4: Assign Weights (Displayed after selecting metrics)
         if selected_metrics:
-            st.subheader(f"Step 4: Rank Metrics Importance (1-10) for {selected_position}.")
-            weights = {}
-            cols = st.columns(min(3, len(selected_metrics)))  # Distribute weights across multiple columns
-            for idx, metric in enumerate(selected_metrics):
-                with cols[idx % 3]:
-                    weights[metric] = st.number_input(
-                        f"{metric}", min_value=1, max_value=10, value=5, step=1, key=f"weight_{metric}", format='%d'
-                    )
+            weights = render_metric_weights_ui(selected_metrics, selected_position)
 
             # Step 5: Select Players to Compare
             st.subheader(f"Step 5: Select Players to Compare for {selected_position}")

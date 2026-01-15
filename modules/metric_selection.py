@@ -1,39 +1,30 @@
 import streamlit as st
 
-# Define available metrics
-ALL_METRICS = [
-    'Goals', 'Assists', 'Shots', 'Pass Accuracy (%)', 'Tackles',
-    'Aerial Duels Won', 'Interceptions', 'Key Passes', 'Clean Sheets', 'Saves'
-]
+def render_metric_weights_ui(selected_metrics, selected_position):
+    """
+    Renders the UI for assigning weights to selected metrics.
+    Replaces the static prototype logic with a dynamic function for app.py.
+    """
+    if not selected_metrics:
+        return {}
 
-# Allow coaches to define metrics and weights for each position
-st.title("Define Metrics and Weights for Each Position")
-
-positions = ['FW', 'CB', 'CM', 'FB', 'WG', 'GK']
-weights = {}
-
-for position in positions:
-    st.subheader(f"Metrics for {position}")
-    selected_metrics = st.multiselect(
-        f"Select 10 metrics for {position}",
-        options=ALL_METRICS,
-        default=ALL_METRICS[:10],  # Pre-fill with default metrics
-        key=f"{position}_metrics"
-    )
+    st.subheader(f"Step 4: Rank Metrics Importance (1-10) for {selected_position}.")
+    weights = {}
     
-    # Ensure exactly 10 metrics are selected
-    if len(selected_metrics) != 10:
-        st.warning(f"Please select exactly 10 metrics for {position}.")
-        continue
+    # Use columns to make the UI compact
+    num_cols = min(3, len(selected_metrics))
+    cols = st.columns(num_cols)
     
-    # Weight each selected metric
-    st.write(f"Assign weights to metrics for {position} (higher = more important)")
-    metric_weights = {}
-    for metric in selected_metrics:
-        weight = st.slider(f"Weight for {metric} ({position})", min_value=1, max_value=10, value=5)
-        metric_weights[metric] = weight
-
-    # Store weights for the position
-    weights[position] = metric_weights
-
-st.write("Metric weights defined:", weights)
+    for idx, metric in enumerate(selected_metrics):
+        with cols[idx % num_cols]:
+            weights[metric] = st.number_input(
+                f"{metric}", 
+                min_value=1, 
+                max_value=10, 
+                value=5, 
+                step=1, 
+                key=f"weight_{metric}", 
+                format='%d'
+            )
+            
+    return weights
