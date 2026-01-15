@@ -31,7 +31,7 @@ if not st.session_state["authenticated"]:
 def render_header():
     logo_col1, logo_col2, logo_col3 = st.columns([1,2,1])
     with logo_col2:
-        st.image("best_xi_logo.png", use_container_width=True)
+        st.image("resources/best_xi_logo.png", use_container_width=True)
         st.markdown(
             '<div style="font-size: 0.7em; font-style: italic; text-align: center; margin-top: 0.5em;">'
             'Best.XI is not affiliated with or endorsed by any data provider. Users must upload data they have the legal right to use. Best.XI is a standalone decision-support tool for lineup selection.'
@@ -68,29 +68,10 @@ with tab_app:
             combined_data = combined_data.explode("Position")  # Ensure multi-position players are counted correctly
         if "Position" in combined_data.columns and not combined_data["Position"].isna().all():
             combined_data["Position"] = combined_data["Position"].astype(str).fillna("")
-            position_map = {
-                "ST": ["CF", "ST"],
-                "WG": ["LW", "RW", "LWF", "RWF"],
-                "CAM/10": ["AMF", "LAMF", "RAMF"],
-                "CDM/6": ["DMF", "LDMF", "RDMF"],
-                "CM/8": ["CMF", "LCMF", "RCMF", "LCMF3", "RCMF3"],
-                "FB": ["LB", "RB", "LWB", "RWB", "LB5", "RB5"],
-                "CB": ["CB", "LCB", "RCB", "LCB3", "RCB3"],
-                "GK": ["GK"]
-            }
-        
-            # Get unique positions from the data
-            data_positions = set(
-                pos.strip() for positions in combined_data["Position"].dropna() 
-                if isinstance(positions, str)
-                for pos in positions.split(",") if pos.strip()
-            )
-            
-            # Create final position list including both individual and grouped positions
+            # get_available_positions already handles the POSITION_MAP logic internally
             unique_positions = get_available_positions(combined_data)
-
         else:
-            unique_positions = ["No Positions Available"]  # Placeholder if no positions exist
+            unique_positions = ["No Positions Available"]
         
         # Step 2: Select Position for Comparison
         st.subheader("Step 2: Select Position for Comparison")
@@ -167,13 +148,12 @@ with tab_app:
 
 with tab_manual:
     render_header()
-    st.markdown(Path("USER_MANUAL.md").read_text(), unsafe_allow_html=True)
+    st.markdown(Path("docs/USER_MANUAL.md").read_text(), unsafe_allow_html=True)
 
 with tab_faq:
     render_header()
-    st.markdown(Path("FAQ.md").read_text(), unsafe_allow_html=True)
+    st.markdown(Path("docs/FAQ.md").read_text(), unsafe_allow_html=True)
 
 with tab_agreement:
     render_header()
-    st.markdown(Path("USER_AGREEMENT.md").read_text(), unsafe_allow_html=True)
-
+    st.markdown(Path("docs/USER_AGREEMENT.md").read_text(), unsafe_allow_html=True)
