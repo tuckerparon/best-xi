@@ -3,11 +3,14 @@ import pandas as pd
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-from modules.processing import load_and_process_files
 from modules.visualizations import create_radar_chart
 from modules.scoring import calculate_position_scores
 from modules.styles import apply_custom_styles
-from modules.processing import load_and_process_files, get_available_positions
+from modules.processing import (
+    load_and_process_files, 
+    get_available_positions, 
+    filter_players_by_position
+)
 
 load_dotenv()
 PASSWORD = os.getenv("APP_PASSWORD", "PILOT26")  # Default for local dev only
@@ -99,22 +102,7 @@ with tab_app:
 
         # --- POSITION FILTERING LOGIC ---
         # Robustly detect grouped positions by checking for ' (' and group name in position_map
-        if " (" in selected_position and selected_position.split(" (")[0] in position_map:
-            # If grouped position selected, get group name and set of positions
-            group_name = selected_position.split(" (")[0]
-            group_positions = set(position_map[group_name])
-            filtered_data = combined_data[
-                combined_data["Position"].apply(
-                    lambda x: isinstance(x, str) and any(pos in group_positions for pos in [p.strip() for p in x.split(",")])
-                )
-            ]
-        else:
-            # If individual position selected, filter for exact match (split/strip logic)
-            filtered_data = combined_data[
-                combined_data["Position"].apply(
-                    lambda x: isinstance(x, str) and selected_position in [p.strip() for p in x.split(",")]
-                )
-            ]
+        filtered_data = filter_players_by_position(combined_data, selected_position)
 
         if filtered_data.empty:
             st.warning("No players available for this position. Please select another position.")
