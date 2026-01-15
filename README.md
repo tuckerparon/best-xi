@@ -15,11 +15,14 @@ uv sync
 
 * Run the app.
 ```bash
-uv run streamlit run app.py
+uv run streamlit run src/app.py
 ```
 
 * Make requisite edits.
     - Streamlit automatically updates live with edits, so no need to rerun app. 
+
+* If you add functionality, be sure to add unit tests in `tests/`
+    - Ensure tests pass by running `uv run pytest`
 
 ## Deployment
 
