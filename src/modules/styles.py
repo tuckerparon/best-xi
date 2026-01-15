@@ -24,6 +24,16 @@ def apply_custom_styles(
     /* Main app background and text */
     .stApp {{background-color: {bg_color}; color: {text_color} !important;}}
     
+    /* Force captions and st.text to black */
+    [data-testid="stCaptionContainer"], .stCaptionContainer, .stText {{
+        color: #000000 !important;
+    }}
+
+    /* Target button text to be white */
+    .stButton > button p {{
+        color: #FFFFFF !important;
+    }}
+    
     .stMarkdown, .css-10trblm, .css-1v0mbdj, .css-1d391kg, .css-1cpxqw2 {{
         color: {text_color} !important;
     }}
