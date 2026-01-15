@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "best-xi"
+version = "0.1.0"
+description = "College soccer analytics tool for recruiting and lineup selection."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    { name = "Tucker Paron", email = "tucker@controllables.com" }
+]
+dependencies = [
+    "streamlit==1.45.1",
+    "pandas==2.2.3",
+    "numpy==1.26.4",
+    "openpyxl==3.1.5",
+    "plotly==6.0.0",
+    "matplotlib==3.9.4",
+    "python-dotenv==1.1.0",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.0.0",
+]
