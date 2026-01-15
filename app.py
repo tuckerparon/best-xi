@@ -9,7 +9,8 @@ from modules.styles import apply_custom_styles
 from modules.processing import (
     load_and_process_files, 
     get_available_positions, 
-    filter_players_by_position
+    filter_players_by_position,
+    aggregate_player_stats
 )
 
 load_dotenv()

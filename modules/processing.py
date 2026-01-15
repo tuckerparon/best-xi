@@ -1,35 +1,6 @@
 import pandas as pd
 from modules.config import POSITION_MAP
 
-def filter_players_by_position(df, selected_position):
-    """
-    Filters the dataframe based on the selected position string.
-    Handles both grouped positions (e.g., 'ST (CF/ST)') and individual positions.
-    """
-    if not isinstance(selected_position, str) or "No Positions Available" in selected_position:
-        return df.iloc[0:0] # Return empty dataframe
-
-    # Check if it's a grouped position from our map
-    if " (" in selected_position:
-        group_name = selected_position.split(" (")[0]
-        if group_name in POSITION_MAP:
-            group_positions = set(POSITION_MAP[group_name])
-            return df[
-                df["Position"].apply(
-                    lambda x: isinstance(x, str) and any(
-                        pos in group_positions for pos in [p.strip() for p in x.split(",")]
-                    )
-                )
-            ]
-
-    # Otherwise, treat as an individual position match
-    return df[
-        df["Position"].apply(
-            lambda x: isinstance(x, str) and selected_position in [p.strip() for p in x.split(",")]
-        )
-    ]
-
-    
 def get_available_positions(df):
     """Generates a list of unique and grouped positions available in the data."""
     if "Position" not in df.columns or df["Position"].isna().all():
@@ -64,6 +35,59 @@ def get_available_positions(df):
                     unique_positions.add(pos)
                     
     return sorted(list(unique_positions))
+
+
+def filter_players_by_position(df, selected_position):
+    """
+    Filters the dataframe based on the selected position string.
+    Handles both grouped positions (e.g., 'ST (CF/ST)') and individual positions.
+    """
+    if not isinstance(selected_position, str) or "No Positions Available" in selected_position:
+        return df.iloc[0:0] # Return empty dataframe
+
+    # Check if it's a grouped position from our map
+    if " (" in selected_position:
+        group_name = selected_position.split(" (")[0]
+        if group_name in POSITION_MAP:
+            group_positions = set(POSITION_MAP[group_name])
+            return df[
+                df["Position"].apply(
+                    lambda x: isinstance(x, str) and any(
+                        pos in group_positions for pos in [p.strip() for p in x.split(",")]
+                    )
+                )
+            ]
+
+    # Otherwise, treat as an individual position match
+    return df[
+        df["Position"].apply(
+            lambda x: isinstance(x, str) and selected_position in [p.strip() for p in x.split(",")]
+        )
+    ]
+
+
+def aggregate_player_stats(df):
+    """
+    Aggregates stats across all games for each player.
+    Calculates mean for numeric metrics and totals for games/minutes.
+    """
+    # 1. Count games played and sum minutes played
+    games_played = df.groupby("Player Name").size().rename("Games Played at Position")
+    
+    # Handle potential casing differences in column names
+    minutes_col = next((c for c in df.columns if c.lower() == "minutes played"), "Minutes Played")
+    minutes_played = df.groupby("Player Name")[minutes_col].sum().rename("Minutes Played at Position")
+    
+    # 2. Get numeric columns for averaging
+    numeric_cols = df.select_dtypes(include=["number"]).columns.tolist()
+    
+    # 3. Aggregate means
+    df_agg = df.groupby("Player Name")[numeric_cols].mean().reset_index()
+    
+    # 4. Merge totals back in
+    df_agg = df_agg.merge(games_played, on="Player Name").merge(minutes_played, on="Player Name")
+    
+    return df_agg, numeric_cols
 
 
 def process_formatting_split(df):
