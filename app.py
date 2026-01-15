@@ -7,6 +7,7 @@ from modules.processing import load_and_process_files
 from modules.visualizations import create_radar_chart
 from modules.scoring import calculate_position_scores
 from modules.styles import apply_custom_styles
+from modules.processing import load_and_process_files, get_available_positions
 
 load_dotenv()
 PASSWORD = os.getenv("APP_PASSWORD", "PILOT26")  # Default for local dev only
@@ -81,27 +82,7 @@ with tab_app:
             )
             
             # Create final position list including both individual and grouped positions
-            unique_positions = set()
-            for group_name, grouped_positions in position_map.items():
-                group_set = set(grouped_positions)
-                # Find players for each position in the group
-                players_in_group = combined_data[
-                    combined_data["Position"].apply(
-                        lambda x: isinstance(x, str) and any(pos in group_set for pos in [p.strip() for p in x.split(",")])
-                    )
-                ]
-                if not players_in_group.empty:
-                    unique_positions.add(f"{group_name} ({'/'.join(grouped_positions)})")
-                    unique_positions.update(
-                        pos for pos in grouped_positions
-                        if not combined_data[
-                            combined_data["Position"].apply(
-                                lambda x: isinstance(x, str) and pos in [p.strip() for p in x.split(",")]
-                            )
-                        ].empty
-                    )
-            # Only keep positions with at least one player
-            unique_positions = sorted(unique_positions)
+            unique_positions = get_available_positions(combined_data)
 
         else:
             unique_positions = ["No Positions Available"]  # Placeholder if no positions exist

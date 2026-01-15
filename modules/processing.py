@@ -1,5 +1,42 @@
 import pandas as pd
+from modules.config import POSITION_MAP
 
+def get_available_positions(df):
+    """Generates a list of unique and grouped positions available in the data."""
+    if "Position" not in df.columns or df["Position"].isna().all():
+        return ["No Positions Available"]
+
+    unique_positions = set()
+    
+    for group_name, grouped_positions in POSITION_MAP.items():
+        group_set = set(grouped_positions)
+        
+        # Check if any players exist for this group
+        players_in_group = df[
+            df["Position"].apply(
+                lambda x: isinstance(x, str) and any(
+                    pos in group_set for pos in [p.strip() for p in x.split(",")]
+                )
+            )
+        ]
+        
+        if not players_in_group.empty:
+            # Add the group name option
+            unique_positions.add(f"{group_name} ({'/'.join(grouped_positions)})")
+            
+            # Add individual positions that exist within that group
+            for pos in grouped_positions:
+                has_pos = not df[
+                    df["Position"].apply(
+                        lambda x: isinstance(x, str) and pos in [p.strip() for p in x.split(",")]
+                    )
+                ].empty
+                if has_pos:
+                    unique_positions.add(pos)
+                    
+    return sorted(list(unique_positions))
+
+    
 def process_formatting_split(df):
     """
     Adjust column names for formatting where metrics have a "total/detail" structure.
