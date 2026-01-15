@@ -156,3 +156,4 @@ def load_and_process_files(file_paths):
     # Combine all processed files into one DataFrame
     combined_df = pd.concat(dataframes, ignore_index=True)
     return combined_df
+    
