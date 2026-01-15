@@ -31,7 +31,8 @@ if not st.session_state["authenticated"]:
 def render_header():
     logo_col1, logo_col2, logo_col3 = st.columns([1,2,1])
     with logo_col2:
-        st.image("resources/best_xi_logo.png", use_container_width=True)
+        logo_path = Path(__file__).parent / "resources" / "best_xi_logo.png"
+        st.image(str(logo_path), use_container_width=True)
         st.markdown(
             '<div style="font-size: 0.7em; font-style: italic; text-align: center; margin-top: 0.5em;">'
             'Best.XI is not affiliated with or endorsed by any data provider. Users must upload data they have the legal right to use. Best.XI is a standalone decision-support tool for lineup selection.'
@@ -148,12 +149,15 @@ with tab_app:
 
 with tab_manual:
     render_header()
-    st.markdown(Path("docs/USER_MANUAL.md").read_text(), unsafe_allow_html=True)
+    manual_path = Path(__file__).parent / "docs" / "USER_MANUAL.md"
+    st.markdown(manual_path.read_text(), unsafe_allow_html=True)
 
 with tab_faq:
     render_header()
-    st.markdown(Path("docs/FAQ.md").read_text(), unsafe_allow_html=True)
+    faq_path = Path(__file__).parent / "docs" / "FAQ.md"
+    st.markdown(faq_path.read_text(), unsafe_allow_html=True)
 
 with tab_agreement:
     render_header()
-    st.markdown(Path("docs/USER_AGREEMENT.md").read_text(), unsafe_allow_html=True)
+    agreement_path = Path(__file__).parent / "docs" / "USER_AGREEMENT.md"
+    st.markdown(agreement_path.read_text(), unsafe_allow_html=True)
