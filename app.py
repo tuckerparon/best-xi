@@ -4,9 +4,11 @@ from modules.processing import load_and_process_files
 from modules.visualizations import create_radar_chart
 from pathlib import Path
 from modules.scoring import calculate_position_scores
+import os
+from dotenv import load_dotenv
 
-# Password protection
-PASSWORD = "PILOT25"
+load_dotenv()
+PASSWORD = os.getenv("APP_PASSWORD", "PILOT25")  # Default for local dev only
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
 
