@@ -10,9 +10,15 @@ def apply_custom_styles(
     """Applies custom CSS styling with parameterized colors."""
     css = f"""
     <style>
-    /* Center the tab navigation */
+    /* Center the tab navigation and set text color */
     div[data-baseweb="tab-list"] {{
         justify-content: center !important;
+    }}
+    button[data-baseweb="tab"] p {{
+        color: #000 !important;
+    }}
+    button[data-baseweb="tab"] {{
+        color: #000 !important;
     }}
 
     /* Main app background and text */
@@ -24,11 +30,24 @@ def apply_custom_styles(
     
     .stMarkdownContainer {{color: {secondary_text} !important;}}
     
+    /* Step subtext / Widget labels */
+    label[data-testid="stWidgetLabel"] p, label[data-testid="stWidgetLabel"] {{
+        color: #000 !important;
+    }}
+    
     /* Alert/Warning styling */
     .stAlert {{
         background-color: {alert_bg} !important; 
-        color: #111 !important; 
-        font-weight: bold;
+        border-radius: 0.5rem !important;
+        overflow: hidden !important;
+        border: none !important;
+        font-weight: bold !important;
+    }}
+    .stAlert div {{
+        color: #000 !important;
+    }}
+    .stAlert p {{
+        color: #000 !important;
     }}
     
     /* Table headers */
